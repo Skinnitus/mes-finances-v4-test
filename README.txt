@@ -1,7 +1,4 @@
-MES FINANCES V4.0 — LIVRAISON CONSOLIDÉE
-
-Déployer uniquement sur mes-finances-v4-test avant remplacement de production.
-Conserver une sauvegarde JSON récente.
-Ne pas effacer le stockage local de la PWA.
-Les soldes de référence restent manuels; les soldes calculés intègrent les opérations postérieures.
-Le fonctionnement Android et la conformité visuelle finale nécessitent validation utilisateur.
+MES FINANCES V4.0 — INTERFACE CONCEPT PHASE 1
+Fichiers à placer à la racine du dépôt de test. Ne pas modifier la production avant validation.
+Données locales conservées si même origine navigateur ; faire une sauvegarde JSON avant mise à jour.
+L’image panoramique est recadrée de la maquette fournie par l’utilisateur.

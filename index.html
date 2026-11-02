@@ -179,7 +179,39 @@ nav button[data-tab="goals"]{display:none!important}
 }
 @media(max-width:350px){#categories .row{grid-template-columns:1fr}#categories .row>.actions{justify-content:flex-start}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button{transition:none}}
-</style></head><body><header><h1>Mes Finances <span style="color:#f1a4be">V4.0</span></h1><div class="muted">MIDNIGHT BORDEAUX · FINANCES PERSONNELLES</div><div class="muted" style="color:#c7e0ec">Votre quotidien, en toute clarté</div></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
+
+/* Direction artistique : reproduction fonctionnelle du concept approuvé phase 1. */
+:root{--bg:#111218;--panel:#1b1d25;--panel2:#26252e;--ink:#f8f4f6;--muted:#aaa3af;--line:#34313c;--accent:#b64a72;--button:#332934;--shadow:0 12px 32px rgba(0,0,0,.19)}
+:root[data-theme="light"]{--bg:#fbf6f8;--panel:#fff;--panel2:#f8edf2;--ink:#29212b;--muted:#7c6c79;--line:#eee1e8;--accent:#9d3157;--button:#f4e6ec;--shadow:0 12px 32px rgba(72,25,48,.08)}
+body{font-family:Inter,"Segoe UI",system-ui,sans-serif;letter-spacing:-.012em}
+.concept-header{position:relative;min-height:166px;padding:22px max(20px,calc((100vw - 1140px)/2)) 38px!important;overflow:hidden;background:linear-gradient(90deg,rgba(48,15,30,.97) 0%,rgba(63,22,42,.88) 34%,rgba(29,23,38,.25) 100%),url('./mountain-banner.jpg') center 44%/cover no-repeat!important;border-bottom:0!important}
+.concept-header:after{content:"";position:absolute;bottom:0;left:0;right:0;height:35px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+.concept-brand{display:flex;align-items:center;gap:13px;position:relative;z-index:1}.concept-logo{height:49px;width:49px;border-radius:14px;box-shadow:0 6px 22px #10071166}.concept-brand h1{font-size:clamp(23px,3vw,32px)!important;font-weight:800;letter-spacing:-1px;color:#fff;margin:0}.concept-tagline{font-size:12px;line-height:1.45;color:#f4dfe8;max-width:410px;margin-top:4px}.concept-version{display:inline-block;position:relative;z-index:1;margin:17px 0 0 63px;color:#f5c4d4;font-size:10px;font-weight:700;letter-spacing:1.3px}
+main{max-width:1150px!important;padding-top:0!important}
+.card{background:var(--panel)!important;border:1px solid var(--line)!important;border-radius:18px!important;box-shadow:var(--shadow)!important;padding:18px!important}
+.card h2,.card h3{font-weight:780;letter-spacing:-.45px}
+.hero{position:relative;background:linear-gradient(115deg,#802542 0%,#9d355d 55%,#4d2449 100%)!important;border:1px solid #b85a7b!important;box-shadow:0 14px 34px rgba(88,21,50,.28)!important;overflow:hidden}
+.hero:before{content:"";position:absolute;right:-55px;top:-65px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,#fff2 0%,transparent 70%);pointer-events:none}
+.hero strong,.hero .v3-metric{font-size:clamp(34px,7vw,47px)!important;letter-spacing:-1.9px!important;font-weight:830}
+.hero .muted{color:#f8dfe9!important}
+.v3-tiles{gap:9px}.v3-tile{background:var(--panel2);border:1px solid var(--line);border-radius:14px;box-shadow:none;padding:14px}.v3-tile b{font-size:17px}
+button{border-radius:12px;font-weight:650}button.primary{background:linear-gradient(110deg,#b93e65,#852b56)!important;border-color:#bc5b7e!important;color:#fff!important}
+button.danger{background:rgba(163,56,84,.12)!important;color:var(--accent)!important;border:1px solid rgba(173,76,108,.28)!important}
+input:not([type=checkbox]),select,textarea{background:var(--panel2)!important;border:1px solid var(--line)!important;border-radius:11px!important;min-height:43px;color:var(--ink)!important}
+.row,.listItem{border-color:var(--line)!important}.row{gap:12px}.row b,.listTop b{font-weight:750}
+#categories .row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:12px;padding:13px 0!important}
+#categories .row>.actions{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:6px!important;align-items:center}
+#categories .row>.actions button{font-size:11px!important;padding:8px 9px!important;min-height:34px!important}
+#v4due .listItem{padding:11px 0!important}#v4due .listItem label{display:flex!important;gap:10px!important;align-items:center!important}
+input[type=checkbox]{width:19px!important;height:19px!important;min-width:19px!important;max-width:19px!important;min-height:19px!important;appearance:auto!important;-webkit-appearance:checkbox!important;accent-color:#bb4a71!important;flex:0 0 19px!important;box-shadow:none!important}
+nav{background:color-mix(in srgb,var(--panel) 97%,transparent)!important;backdrop-filter:blur(16px);border-color:var(--line)!important;box-shadow:0 -8px 26px #0002!important}
+nav button{color:var(--muted)!important;border:0!important;min-width:0!important}nav button.active{background:var(--panel2)!important;color:var(--accent)!important}
+#finMorePanel{background:var(--panel)!important}#finMorePanel button{background:var(--panel2)!important}
+.v3-fab{background:linear-gradient(135deg,#c34369,#852f5a)!important;border:1px solid #d27b97!important;width:54px;height:54px;box-shadow:0 9px 25px #140b1866}
+@media(max-width:650px){.concept-header{min-height:165px;padding:20px 17px 37px!important;background-position:center!important}.concept-logo{width:43px;height:43px;border-radius:12px}.concept-brand h1{font-size:23px!important}.concept-tagline{font-size:11px}.concept-version{margin-left:56px;font-size:9px}main{padding:0 11px calc(104px + env(safe-area-inset-bottom,0px))!important}.card{padding:16px!important;margin-bottom:11px!important}.hero{padding:20px!important}nav{padding:7px 5px calc(7px + env(safe-area-inset-bottom,0px))!important}nav button{font-size:11px!important;padding:9px 3px!important;min-height:59px!important}nav button::before{font-size:20px!important}#categories .row>.actions button{padding:7px 6px!important;font-size:10px!important}}
+@media(min-width:850px){.concept-header{min-height:192px;padding-top:30px!important}.concept-brand h1{font-size:32px!important}main{padding:0 24px 45px!important}nav{position:sticky;top:0;bottom:auto;margin:0 auto 18px!important;max-width:1120px!important;border-radius:0 0 17px 17px!important;z-index:24}.card{padding:23px!important}#daily{max-width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important}}
+</style></head><body><header class="concept-header"><div class="concept-brand"><img src="./icon-192.png" alt="" class="concept-logo"><div><h1>Mes Finances</h1><div class="concept-tagline">Gérer mon budget, suivre mes comptes et garder le cap</div></div></div><span class="concept-version">MIDNIGHT BORDEAUX · V4.0</span></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
 const SEED={"charges":[],"accounts":[{"name":"Courant","balance":0,"date":"2026-10-28"},{"name":"Épargne","balance":0,"date":"2026-10-28"},{"name":"FNZ Sparkonto","balance":0,"date":"2026-10-28"}],"salaries":{},"carry":{},"expenses":[],"octoberOpening":0,"octoberRemainingCharges":0};
 const KEY='mes-finances-v40-ultimate-local-v1';
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
