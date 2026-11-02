@@ -49,7 +49,137 @@ nav button.active,nav button#finMoreButton.active{color:#e9a6c2;background:var(-
 @media(max-width:420px){main{padding:15px 12px calc(108px + env(safe-area-inset-bottom,0px))}.card{padding:17px;border-radius:19px}.grid{grid-template-columns:1fr 1fr;gap:10px}header{padding:23px 17px 25px}nav button{font-size:11px!important}.v3-tiles{grid-template-columns:1fr 1fr}}
 @media(max-width:350px){.grid{grid-template-columns:1fr}.v3-tiles{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-</style></head><body><header><h1>Mes Finances V4.0 — Midnight Bordeaux Ultimate</h1><div class="muted">MES FINANCES · ÉDITION V4.0</div><div class="muted" style="color:#c7e0ec">Votre quotidien, en toute clarté</div></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
+
+/* Mobile visual refinement — preserve existing financial logic */
+:root{--ui-ease:cubic-bezier(.2,.8,.2,1)}
+body{font-feature-settings:"tnum" 1}
+.card{overflow-wrap:break-word}
+.card .listItem{padding:13px 0}
+.card .listTop{align-items:flex-start;gap:12px}
+.card .listTop>div:first-child{min-width:0;flex:1}
+.card .listTop>b{white-space:nowrap;font-size:15px;font-variant-numeric:tabular-nums}
+.card .listTop .muted{margin-top:3px;line-height:1.45}
+/* Native checkbox must never inherit the full-width text input styling. */
+input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:inline-grid;place-content:center;width:21px!important;height:21px!important;min-height:21px!important;flex:0 0 21px;margin:0!important;padding:0!important;border-radius:6px!important;border:1.5px solid var(--muted)!important;background:var(--panel2)!important;vertical-align:middle;cursor:pointer}
+input[type="checkbox"]:checked{background:var(--accent)!important;border-color:var(--accent)!important}
+input[type="checkbox"]:checked::after{content:"✓";font-size:15px;font-weight:800;color:white;line-height:1}
+input[type="radio"]{width:20px!important;min-height:20px!important;height:20px!important;padding:0!important;vertical-align:middle}
+#v4due .listItem label{display:flex;align-items:center;gap:10px;margin:10px 0 0;font-size:12px;color:var(--muted);font-weight:600;line-height:1.4}
+#v4due .listItem{padding:13px 0}
+/* Compact category management and action rows */
+.card .row{min-width:0;gap:12px;flex-wrap:wrap}
+.card .row>div:first-child{min-width:0;flex:1 1 130px}
+.card .row>.actions{display:flex;flex:0 1 auto;gap:7px;margin:0;flex-wrap:nowrap}
+.card .row>.actions button,.card .row>button{min-height:36px;padding:7px 10px;font-size:12px;border-radius:10px}
+.card .row .actions button.danger{background:transparent;color:#e99bae;border-color:var(--line)}
+.card .row .actions button:not(.danger){background:var(--panel2)}
+.card .row .actions button{white-space:nowrap}
+@media(max-width:540px){
+ header{padding:20px 18px 21px}
+ header h1{font-size:23px;line-height:1.2}
+ main{padding-top:14px}
+ .card{padding:16px!important;margin-bottom:12px;border-radius:17px!important}
+ .card h2{font-size:18px}
+ .card .row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+ .card .row>.actions{justify-content:flex-end}
+ .card .row>.actions button{font-size:11px;padding:7px 8px;min-height:34px}
+ .card .listItem .listTop{gap:8px}
+ .card .listItem .listTop b{font-size:14px}
+ .card .listItem .muted{font-size:12px}
+}
+@media(max-width:365px){.card .row{grid-template-columns:1fr}.card .row>.actions{justify-content:flex-start}}
+
+/* Midnight Bordeaux — premium production visual layer */
+:root{--bg:#101421;--panel:#1b2030;--panel2:#26283a;--ink:#f8f3f6;--muted:#b5aeba;--line:#38374a;--accent:#c0587b;--accent2:#a28ac9;--button:#30283d;--hero1:#702744;--hero2:#292744;--radius:21px;--shadow:0 10px 30px #07071135}
+:root[data-theme="light"]{--bg:#f7f4f4;--panel:#ffffff;--panel2:#f5edf0;--ink:#27202d;--muted:#736773;--line:#e9dfe5;--accent:#903555;--accent2:#745c98;--button:#f4e8ee;--hero1:#802e4d;--hero2:#514069;--shadow:0 10px 28px #45293c12}
+body{background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+header{background:radial-gradient(circle at 87% -25%,#bb618b45,transparent 48%),linear-gradient(120deg,#151b2a,#32203a 67%,#552541);border-bottom:1px solid #ffffff14;padding:26px max(18px,calc((100vw - 1100px)/2)) 25px}
+header h1{font-size:clamp(22px,3.1vw,30px);max-width:620px;letter-spacing:-.85px}header .muted{font-size:12px;letter-spacing:.6px}
+header .muted:last-child{font-size:13px;letter-spacing:0;opacity:.84}
+main{max-width:1050px;padding:18px 15px calc(118px + env(safe-area-inset-bottom,0px))}
+.card{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:20px;padding:19px;margin-bottom:14px}
+.card h2{font-size:19px}.card h3{font-size:16px}.muted{color:var(--muted)}
+.hero{background:radial-gradient(circle at 100% 0%,#e394ad35,transparent 52%),linear-gradient(120deg,#772d4c,#332843);border:1px solid #9e5878;padding:24px;box-shadow:0 14px 36px #3115274d}
+.hero strong{font-size:clamp(38px,8vw,54px);letter-spacing:-2px;color:#fff}.hero .positive{color:#fff}.hero .negative{color:#ffcad1}
+.v3-tiles{gap:10px}.v3-tile{border-radius:15px;background:var(--panel2);padding:15px}.v3-tile b{font-size:19px}
+input:not([type="checkbox"]):not([type="radio"]),select,textarea{background:var(--panel2);border:1px solid var(--line);border-radius:12px;color:var(--ink);min-width:0;max-width:100%;min-height:45px}
+input[type="checkbox"]{appearance:none!important;-webkit-appearance:none!important;display:inline-grid!important;place-items:center!important;vertical-align:middle!important;width:19px!important;height:19px!important;min-width:19px!important;min-height:19px!important;max-width:19px!important;margin:0!important;padding:0!important;border:1.5px solid var(--muted)!important;border-radius:5px!important;background:var(--panel2)!important;flex:none!important}
+input[type="checkbox"]:checked{background:var(--accent)!important;border-color:var(--accent)!important}
+input[type="checkbox"]:checked:after{content:'✓';color:#fff;font-size:13px;line-height:1}
+#v4due .listItem{padding:12px 0}#v4due .listItem label{display:flex!important;align-items:center!important;gap:10px!important;font-size:12px!important;margin:9px 0 0!important}
+.listTop{align-items:flex-start}.listTop>div:first-child{flex:1;min-width:0}.listTop>b{flex:none;white-space:nowrap}
+.row{gap:10px;min-width:0}.row>div:first-child{min-width:0}.row>.actions{margin:0;display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.row>.actions button{font-size:12px;padding:7px 10px;min-height:35px;white-space:nowrap}.row>.actions button.danger{background:transparent;color:#e9a2b6}
+button{border-radius:11px;min-height:40px;padding:9px 13px;font-size:13px}button.primary{background:linear-gradient(120deg,#ae4769,#79395e);border-color:#b56888}
+nav{justify-content:center!important;gap:4px!important;overflow:hidden!important;background:var(--panel);border-top:1px solid var(--line);padding:8px 8px calc(9px + env(safe-area-inset-bottom,0px))!important}
+nav button{flex:1 1 0!important;min-width:0!important;max-width:150px!important;min-height:61px!important;font-size:11px!important;white-space:normal!important;padding:6px 3px!important}
+nav button.active{background:var(--panel2);color:#ed9cba}nav button::before{font-size:21px}nav button#finMoreButton::before{content:'☷';font-size:23px}
+#finMorePanel{background:var(--panel);border:1px solid var(--line)}#finMorePanel button{background:var(--panel2)}
+.v3-fab{width:54px;height:54px;bottom:calc(91px + env(safe-area-inset-bottom,0px))}
+/* Compact transaction/category rows without losing accessible touch targets */
+#categories .row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:12px 0}
+#categories .row>.actions{display:flex;flex-wrap:nowrap;gap:6px}#categories .row>.actions button{padding:8px;font-size:11px;min-height:37px}
+#v4due .listTop b{font-size:14px}#v4due .listItem .muted{font-size:12px}
+@media(max-width:430px){main{padding-left:12px;padding-right:12px}.card{padding:16px!important}.grid{gap:9px}header{padding:22px 17px}header h1{font-size:22px}.hero{padding:21px!important}#categories .row>.actions button{padding:7px 6px;font-size:10px}}
+@media(max-width:360px){#categories .row{grid-template-columns:1fr}#categories .row>.actions{justify-content:flex-start;margin-top:7px}}
+@media(min-width:850px){main{padding-top:24px}nav{position:sticky;top:0;bottom:auto;max-width:1050px;border-radius:16px;border:1px solid var(--line);margin:0 auto 18px!important}.card{padding:25px}}
+
+/* Livraison intégrée : densité premium, lisibilité et composants tactiles */
+:root{--radius:18px;--shadow:0 8px 28px rgba(4,5,17,.16)}
+html{scroll-behavior:smooth;scroll-padding-bottom:110px}
+body{font-feature-settings:"tnum" 1;-webkit-tap-highlight-color:transparent}
+header{padding-top:22px;padding-bottom:20px;background:radial-gradient(ellipse at 90% 0%,rgba(171,75,111,.27),transparent 55%),linear-gradient(118deg,#111827,#242034 62%,#462139)}
+header h1{font-size:clamp(20px,2.7vw,27px);letter-spacing:-.65px;line-height:1.25}
+header .muted{font-size:11px!important;letter-spacing:.06em}
+main{max-width:1050px}
+.card{border-radius:18px;padding:19px;box-shadow:var(--shadow)}
+.card h2{font-weight:780;letter-spacing:-.4px}
+.card h3{letter-spacing:-.2px}
+.hero{border-radius:22px;background:radial-gradient(ellipse at 95% -10%,rgba(251,169,203,.24),transparent 52%),linear-gradient(125deg,#7a304f,#392740 75%)}
+.hero .v3-metric,.hero strong{font-variant-numeric:tabular-nums;letter-spacing:-1.7px;line-height:1.1}
+.v3-tile{border:1px solid var(--line);min-width:0;overflow-wrap:anywhere}
+.v3-tile b{font-size:clamp(15px,3vw,19px);font-variant-numeric:tabular-nums}
+.row,.listItem{border-color:var(--line)}
+.row{padding:12px 0;align-items:center}
+.listItem{padding:12px 0}
+.listTop{align-items:center;gap:10px}
+.listTop b{font-variant-numeric:tabular-nums}
+.actions{align-items:center}
+button{transition:background .15s ease,transform .12s ease,border-color .15s ease;touch-action:manipulation}
+button:active{transform:scale(.98)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #eaa0bc;outline-offset:2px}
+button.danger{background:rgba(161,55,87,.16);color:#f2a4bb;border:1px solid rgba(212,98,133,.25)}
+input[type="checkbox"]{appearance:auto!important;-webkit-appearance:checkbox!important;accent-color:var(--accent)!important;display:inline-block!important;width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;max-width:18px!important;margin:0!important;padding:0!important;flex:0 0 18px!important;border-radius:4px!important;vertical-align:middle!important}
+input[type="checkbox"]:checked:after{content:none!important}
+#v4due .listItem label{display:flex!important;align-items:center!important;gap:12px!important;min-height:40px;font-size:13px!important;line-height:1.35!important}
+#v4due .listItem{padding:11px 0}
+#categories .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+#categories .row>.actions{margin:0;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+#categories .row>.actions button{font-size:11px;min-height:36px;padding:7px 9px}
+#categories .row>.actions button.danger{background:transparent}
+nav button[data-tab="goals"]{display:none!important}
+#finMorePanel{border-radius:22px;padding:20px;box-shadow:0 18px 60px rgba(0,0,0,.55)}
+#finMorePanel button{border:1px solid var(--line);border-radius:13px}
+#finMoreBackdrop:not([hidden]){backdrop-filter:blur(3px)}
+@media(max-width:600px){
+ header{padding:19px 17px 18px}header h1{font-size:21px}
+ main{padding:13px 11px calc(113px + env(safe-area-inset-bottom,0px))}
+ .card{padding:16px!important;margin-bottom:12px;border-radius:17px}
+ .hero{padding:20px!important}
+ .hero .v3-metric{font-size:clamp(31px,9vw,43px)}
+ .v3-tiles{gap:8px}.v3-tile{padding:12px}
+ .card .row{display:flex;flex-wrap:wrap;gap:8px}
+ .card .row>.actions{flex:0 0 auto;margin-left:auto;justify-content:flex-end}
+ #categories .row{display:grid;grid-template-columns:minmax(0,1fr) auto}
+ #categories .row>.actions{flex-wrap:nowrap}
+ #categories .row>.actions button{font-size:10px;min-height:34px;padding:6px 7px}
+ nav{padding:7px 8px calc(8px + env(safe-area-inset-bottom,0px))!important}
+ nav button{min-height:60px!important;line-height:1.3}
+ #finMorePanel{bottom:calc(82px + env(safe-area-inset-bottom,0px));max-height:67vh}
+}
+@media(max-width:350px){#categories .row{grid-template-columns:1fr}#categories .row>.actions{justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button{transition:none}}
+</style></head><body><header><h1>Mes Finances <span style="color:#f1a4be">V4.0</span></h1><div class="muted">MIDNIGHT BORDEAUX · FINANCES PERSONNELLES</div><div class="muted" style="color:#c7e0ec">Votre quotidien, en toute clarté</div></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
 const SEED={"charges":[],"accounts":[{"name":"Courant","balance":0,"date":"2026-10-28"},{"name":"Épargne","balance":0,"date":"2026-10-28"},{"name":"FNZ Sparkonto","balance":0,"date":"2026-10-28"}],"salaries":{},"carry":{},"expenses":[],"octoberOpening":0,"octoberRemainingCharges":0};
 const KEY='mes-finances-v40-ultimate-local-v1';
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
@@ -95,7 +225,7 @@ function editExpense(id){let e=state.expenses.find(x=>x.id===id),name=prompt('No
 function renderCharges(){let c=editCharge===null?null:state.charges.find(x=>x.id===editCharge);$('charges').innerHTML=`<div class="card"><h2>${c?'Modifier':'Ajouter'} une charge régulière</h2><label>Nom</label><input id="chName" value="${esc(c?.name||'')}"><div class="grid"><div><label>Montant (€)</label><input id="chAmount" type="number" step="0.01" min="0" value="${c?.amount??''}"></div><div><label>Première échéance</label><input id="chStart" type="date" value="${c?.start||month+'-01'}"></div><div><label>Tous les…</label><input id="chInterval" type="number" min="1" step="1" value="${c?.interval||1}"></div><div><label>Unité</label><select id="chUnit">${['Jours','Semaines','Mois'].map(u=>`<option ${c?.unit===u?'selected':''}>${u}</option>`).join('')}</select></div><div><label>Compte débité</label><select id="chAccount">${state.accounts.map(a=>`<option ${c?.account===a.name?'selected':''}>${esc(a.name)}</option>`).join('')}</select></div><div><label>Date de fin (facultative)</label><input id="chEnd" type="date" value="${c?.end||''}"></div></div><div class="actions"><button class="primary" onclick="saveCharge()">Enregistrer</button>${c?'<button onclick="editCharge=null;render()">Annuler</button>':''}</div></div>${renderMonthlyDueDetails(month)}<div class="card"><h3>Charges régulières (${state.charges.length})</h3><p class="muted">Les charges actives sont réservées dès le début de chaque mois. Modifier une charge change les budgets recalculés.</p>${state.charges.map(ch=>`<div class="listItem"><div class="listTop"><div class="wrap"><b>${esc(ch.name)}</b><div class="muted">${esc(ch.interval)} ${esc(ch.unit.toLowerCase())} · ${esc(ch.account)} · ${ch.active?'Active':'Désactivée'}</div></div><b>${eur(ch.amount)}</b></div><div class="actions"><button onclick="editCharge=${ch.id};render();window.scrollTo(0,0)">Modifier</button><button onclick="toggleCharge(${ch.id})">${ch.active?'Désactiver':'Activer'}</button><button class="danger" onclick="deleteCharge(${ch.id})">Supprimer</button></div></div>`).join('')}</div>`}
 function saveCharge(){let name=$('chName').value.trim(),amount=Number($('chAmount').value),start=$('chStart').value,interval=Number($('chInterval').value),unit=$('chUnit').value,account=$('chAccount').value,end=$('chEnd').value;if(!name||!start||amount<0||!Number.isInteger(interval)||interval<1||end&&end<start)return alert('Vérifie les informations de la charge.');let obj={name,amount,start,interval,unit,account,end,budget:'Fixe',active:true};if(editCharge!==null){let c=state.charges.find(x=>x.id===editCharge);Object.assign(c,obj)}else state.charges.push({id:Date.now(),...obj});editCharge=null;save()}
 function toggleCharge(id){let c=state.charges.find(x=>x.id===id);c.active=!c.active;save()}function deleteCharge(id){if(confirm('Supprimer cette charge ?')){state.charges=state.charges.filter(x=>x.id!==id);save()}}
-function renderAccounts(){$('accounts').innerHTML=`<div class="card"><h2>Mes trois comptes</h2><p class="muted">Soldes de référence importés de ton Excel. Les budgets ne sont pas des soldes bancaires en temps réel.</p>${state.accounts.map((a,i)=>`<div class="listItem"><b>${esc(a.name)}</b><div class="muted">Au ${esc(a.date)}</div><label>Solde de référence (€)</label><input type="number" step="0.01" value="${a.balance}" onchange="state.accounts[${i}].balance=Number(this.value);state.accounts[${i}].baselineUpdatedAt=Date.now();save()"><label>Date du solde</label><input type="date" value="${a.date}" onchange="state.accounts[${i}].date=this.value;state.accounts[${i}].baselineUpdatedAt=Date.now();save()"></div>`).join('')}</div>`}
+function renderAccounts(){$('accounts').innerHTML=`<div class="card"><h2>Mes trois comptes</h2><p class="muted">Soldes de référence renseignés ou importés. Les budgets ne sont pas des soldes bancaires en temps réel.</p>${state.accounts.map((a,i)=>`<div class="listItem"><b>${esc(a.name)}</b><div class="muted">Au ${esc(a.date)}</div><label>Solde de référence (€)</label><input type="number" step="0.01" value="${a.balance}" onchange="state.accounts[${i}].balance=Number(this.value);state.accounts[${i}].baselineUpdatedAt=Date.now();save()"><label>Date du solde</label><input type="date" value="${a.date}" onchange="state.accounts[${i}].date=this.value;state.accounts[${i}].baselineUpdatedAt=Date.now();save()"></div>`).join('')}</div>`}
 function renderBackup(){$('backup').innerHTML=`<div class="card"><h2>Sauvegarder mes données</h2><p>Les données sont enregistrées sur cet appareil dans le navigateur. Effacer les données du navigateur peut les supprimer. Fais des sauvegardes régulières.</p><div class="actions"><button class="primary" onclick="exportData()">Exporter une sauvegarde JSON</button></div><label>Restaurer une sauvegarde JSON</label><input type="file" accept=".json,application/json" onchange="importData(this)"></div><div class="card"><h3>Informations</h3><p class="muted">Application hors ligne, sans connexion bancaire. La paie reçue un mois finance le mois suivant. Les charges FNZ restent réservées dans les charges fixes.</p></div>`}
 function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mes-finances-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
 async function importData(input){let f=input.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!Array.isArray(obj.charges)||!Array.isArray(obj.expenses)||!Array.isArray(obj.accounts))throw Error();if(!confirm('Remplacer les données actuelles par cette sauvegarde ?'))return;state=normalizePrime(obj);save()}catch{alert('Sauvegarde invalide')}}
@@ -481,7 +611,7 @@ v4Forecast=function(days){
  function close(){panel.hidden=true;backdrop.hidden=true;more.setAttribute('aria-expanded','false')}
  function sync(){more.classList.toggle('active',!core.has(tab));for(const b of grid.querySelectorAll('button'))b.classList.toggle('active',b.dataset.target===tab)}
  for(const b of nav.querySelectorAll('button[data-tab]')){
-  if(core.has(b.dataset.tab))continue;
+  if(core.has(b.dataset.tab)||b.dataset.tab==='goals')continue;
   const item=document.createElement('button');item.type='button';item.dataset.target=b.dataset.tab;item.textContent=b.textContent;
   item.onclick=()=>{tab=b.dataset.tab;close();render();window.scrollTo(0,0)};grid.appendChild(item)
  }
