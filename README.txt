@@ -1,4 +1,3 @@
-MES FINANCES V4.0 — INTERFACE CONCEPT PHASE 1
-Fichiers à placer à la racine du dépôt de test. Ne pas modifier la production avant validation.
-Données locales conservées si même origine navigateur ; faire une sauvegarde JSON avant mise à jour.
-L’image panoramique est recadrée de la maquette fournie par l’utilisateur.
+Mes Finances V4.0 - Comptes dynamiques, rentrées exceptionnelles, clôture, diagramme catégories.
+Déployer uniquement dans le dépôt de test. Sauvegarder JSON avant importation.
+Les soldes historiques ne sont pas recalculés rétroactivement : les salaires historiques sans date de réception ne sont pas crédités automatiquement.
