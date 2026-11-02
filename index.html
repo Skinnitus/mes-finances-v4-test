@@ -211,6 +211,9 @@ nav button{color:var(--muted)!important;border:0!important;min-width:0!important
 @media(max-width:650px){.concept-header{min-height:165px;padding:20px 17px 37px!important;background-position:center!important}.concept-logo{width:43px;height:43px;border-radius:12px}.concept-brand h1{font-size:23px!important}.concept-tagline{font-size:11px}.concept-version{margin-left:56px;font-size:9px}main{padding:0 11px calc(104px + env(safe-area-inset-bottom,0px))!important}.card{padding:16px!important;margin-bottom:11px!important}.hero{padding:20px!important}nav{padding:7px 5px calc(7px + env(safe-area-inset-bottom,0px))!important}nav button{font-size:11px!important;padding:9px 3px!important;min-height:59px!important}nav button::before{font-size:20px!important}#categories .row>.actions button{padding:7px 6px!important;font-size:10px!important}}
 @media(min-width:850px){.concept-header{min-height:192px;padding-top:30px!important}.concept-brand h1{font-size:32px!important}main{padding:0 24px 45px!important}nav{position:sticky;top:0;bottom:auto;margin:0 auto 18px!important;max-width:1120px!important;border-radius:0 0 17px 17px!important;z-index:24}.card{padding:23px!important}#daily{max-width:100%}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important}}
+</style><style>
+/* Visual dashboard and actual monthly calendar */
+.fin-cal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.fin-cal-head button{width:auto;min-width:42px;padding:10px}.fin-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.fin-weekday{text-align:center;color:var(--muted);font-size:12px;font-weight:700;padding:9px 0}.fin-day{position:relative;min-width:0;min-height:60px;padding:7px 3px;border:1px solid var(--border,rgba(180,130,150,.18));border-radius:12px;background:var(--panel2,#242331);color:var(--text,#fff);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;font-size:14px}.fin-day.fin-out{opacity:.26}.fin-day.fin-today{outline:2px solid var(--accent,#b34370)}.fin-day.fin-selected{background:linear-gradient(140deg,#a22e57,#592347);color:white;border-color:#d47799}.fin-dots{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}.fin-dot{height:6px;width:6px;border-radius:50%;background:#e56b88}.fin-dot.income{background:#4bc89a}.fin-dot.expense{background:#e9ae65}.fin-events{margin-top:16px}.fin-event{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid rgba(150,120,140,.18)}.fin-event small{display:block;color:var(--muted);margin-top:3px}.fin-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.fin-chart-panel{background:var(--panel2,#242331);border-radius:18px;padding:16px;min-width:0}.fin-chart-panel h3{font-size:15px;margin:0 0 14px}.fin-chart-svg{display:block;width:100%;height:auto;max-height:210px}.fin-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;font-size:12px}.fin-legend span{display:inline-flex;align-items:center;gap:5px}.fin-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}.fin-visual-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.fin-visual-summary div{padding:12px;background:var(--panel2,#242331);border-radius:12px;min-width:0}.fin-visual-summary small{display:block;color:var(--muted);font-size:11px}.fin-visual-summary strong{display:block;margin-top:6px;font-size:clamp(13px,3.5vw,20px);overflow-wrap:anywhere}@media(max-width:560px){.fin-chart-grid{grid-template-columns:1fr}.fin-day{min-height:51px;border-radius:9px}.fin-calendar{gap:3px}.fin-visual-summary{grid-template-columns:1fr 1fr}}
 </style></head><body><header class="concept-header"><div class="concept-brand"><img src="./icon-192.png" alt="" class="concept-logo"><div><h1>Mes Finances</h1><div class="concept-tagline">Gérer mon budget, suivre mes comptes et garder le cap</div></div></div><span class="concept-version">MIDNIGHT BORDEAUX · V4.0</span></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
 const SEED={"charges":[],"accounts":[{"name":"Courant","balance":0,"date":"2026-10-28"},{"name":"Épargne","balance":0,"date":"2026-10-28"},{"name":"FNZ Sparkonto","balance":0,"date":"2026-10-28"}],"salaries":{},"carry":{},"expenses":[],"octoberOpening":0,"octoberRemainingCharges":0};
 const KEY='mes-finances-v40-ultimate-local-v1';
@@ -653,4 +656,51 @@ v4Forecast=function(days){
  const prior=render;render=function(){prior();sync()};sync();
 })();
 </script>
-</body></html>
+<script>
+/* Calendar month grid and data-driven SVG charts, no external dependencies. */
+(function(){
+let calMonth=(typeof month==='string'?month:TODAY().slice(0,7));let selected=TODAY();
+const colors=['#bd426d','#e5a269','#7d82d3','#52b9a6','#bd8dc5','#d56f80','#8da5bd','#b7aa78'];
+function euro(v){return eur(Math.round((Number(v)||0)*100)/100)}
+function calEvents(m){
+ const last=new Date(m+'-01T12:00:00Z');last.setUTCMonth(last.getUTCMonth()+1);last.setUTCDate(0);
+ const end=last.toISOString().slice(0,10),start=m+'-01';let list=[];
+ try{list=allScheduled(start,end).map(x=>({date:x.date,name:x.name,amount:-Number(x.amount||0),kind:'charge',account:x.account||'Courant'}))}catch(e){console.warn('Calendar scheduled items',e)}
+ for(const x of state.expenses||[])if(x.date>=start&&x.date<=end)list.push({date:x.date,name:x.name,amount:-Number(x.amount||0),kind:'expense',account:x.account||'Courant'});
+ for(const x of state.transfers||[])if(x.date>=start&&x.date<=end)list.push({date:x.date,name:x.label||'Virement',amount:Number(x.amount||0),kind:'transfer',account:(x.from||'')+' → '+(x.to||'')});
+ return list.sort((a,b)=>a.date.localeCompare(b.date));
+}
+function drawCalendar(){const section=document.getElementById('calendar');if(!section)return;
+ const d=new Date(calMonth+'-01T12:00:00Z');if(!Number.isFinite(d.getTime()))return;
+ const year=d.getUTCFullYear(),mo=d.getUTCMonth(),first=(d.getUTCDay()+6)%7,days=new Date(Date.UTC(year,mo+1,0)).getUTCDate(),events=calEvents(calMonth),map={};
+ for(const e of events)(map[e.date]??=[]).push(e);
+ if(!selected.startsWith(calMonth))selected=calMonth+'-01';
+ const label=d.toLocaleDateString('fr-FR',{month:'long',year:'numeric',timeZone:'UTC'});
+ let cells=['L','M','M','J','V','S','D'].map(x=>'<div class="fin-weekday">'+x+'</div>').join('');
+ for(let i=0;i<first;i++)cells+='<div class="fin-day fin-out" aria-hidden="true"></div>';
+ for(let day=1;day<=days;day++){
+  const date=calMonth+'-'+String(day).padStart(2,'0'),items=map[date]||[];
+  cells+='<button type="button" class="fin-day '+(date===TODAY()?'fin-today ':'')+(date===selected?'fin-selected':'')+'" data-fin-date="'+date+'" aria-label="'+day+' '+label+', '+items.length+' opérations"><span>'+day+'</span><span class="fin-dots">'+items.slice(0,3).map(e=>'<i class="fin-dot '+(e.kind==='expense'?'expense':e.kind==='transfer'?'income':'')+'"></i>').join('')+'</span></button>';
+ }
+ const chosen=map[selected]||[];
+ section.innerHTML='<div class="card"><div class="fin-cal-head"><button type="button" id="finCalPrev" aria-label="Mois précédent">‹</button><h2 style="text-transform:capitalize;text-align:center;margin:0">'+esc(label)+'</h2><button type="button" id="finCalNext" aria-label="Mois suivant">›</button></div><div class="fin-calendar">'+cells+'</div><div class="fin-legend"><span><i style="background:#e56b88"></i>Échéance</span><span><i style="background:#e9ae65"></i>Dépense</span><span><i style="background:#4bc89a"></i>Virement</span></div></div><div class="card fin-events"><h3>Opérations du '+esc(new Date(selected+'T12:00:00Z').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}))+'</h3>'+(chosen.length?chosen.map(e=>'<div class="fin-event"><div><b>'+esc(e.name)+'</b><small>'+esc(e.account)+' · '+(e.kind==='charge'?'Échéance prévue':e.kind==='expense'?'Dépense enregistrée':'Virement enregistré')+'</small></div><b>'+euro(e.amount)+'</b></div>').join(''):'<p class="muted">Aucune opération pour cette date.</p>')+'</div>';
+ section.querySelectorAll('[data-fin-date]').forEach(b=>b.onclick=()=>{selected=b.dataset.finDate;drawCalendar()});
+ section.querySelector('#finCalPrev').onclick=()=>{calMonth=shiftMonth(calMonth,-1);drawCalendar()};
+ section.querySelector('#finCalNext').onclick=()=>{calMonth=shiftMonth(calMonth,1);drawCalendar()};
+}
+function graphs(){const report=document.getElementById('reports');if(!report)return;
+ const current=month;const amounts={};const six=[];
+ for(const e of state.expenses||[])if(e.month===current){const k=e.category||'Autres';amounts[k]=(amounts[k]||0)+Number(e.amount||0)}
+ for(let i=5;i>=0;i--){const m=shiftMonth(current,-i);const total=(state.expenses||[]).filter(e=>e.month===m).reduce((n,e)=>n+Number(e.amount||0),0);six.push({m,value:total})}
+ const parts=Object.entries(amounts).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);const total=parts.reduce((n,x)=>n+x[1],0);
+ let acc=0;const arcs=parts.map(([name,val],i)=>{const start=acc/total*100;acc+=val;return colors[i%colors.length]+' '+start+'% '+acc/total*100+'%'});
+ const max=Math.max(1,...six.map(x=>x.value));
+ const bars=six.map((x,i)=>{const h=Math.max(x.value?3:0,120*x.value/max),px=24+i*49;return '<rect x="'+px+'" y="'+(140-h)+'" width="28" height="'+h+'" rx="5" fill="'+(i===5?'#cc4c79':'#865069')+'"/><text x="'+(px+14)+'" y="157" text-anchor="middle" font-size="10" fill="currentColor">'+esc(x.m.slice(5))+'</text>'}).join('');
+ const pie=total?'<div style="width:160px;height:160px;margin:0 auto;border-radius:50%;background:conic-gradient('+arcs.join(',')+');display:grid;place-items:center"><div style="width:98px;height:98px;border-radius:50%;background:var(--panel2,#242331);display:grid;place-items:center;font-weight:800">'+euro(total)+'</div></div>':'<p class="muted">Aucune dépense ce mois.</p>';
+ const node=document.createElement('div');node.className='card fin-graph-card';node.innerHTML='<h2>Vue graphique · '+esc(current)+'</h2><div class="fin-chart-grid"><div class="fin-chart-panel"><h3>Évolution des dépenses · 6 mois</h3><svg class="fin-chart-svg" viewBox="0 0 330 170" role="img" aria-label="Histogramme des dépenses sur six mois"><line x1="10" y1="140" x2="325" y2="140" stroke="currentColor" opacity=".25"/>'+bars+'</svg></div><div class="fin-chart-panel"><h3>Répartition par catégorie</h3>'+pie+'<div class="fin-legend">'+parts.slice(0,8).map(([name],i)=>'<span><i style="background:'+colors[i%colors.length]+'"></i>'+esc(name)+'</span>').join('')+'</div></div></div>';
+ report.insertBefore(node,report.firstChild);
+}
+const prevRender=render;
+render=function(){prevRender();if(tab==='calendar')drawCalendar();if(tab==='reports'){document.querySelectorAll('#reports .fin-graph-card').forEach(x=>x.remove());graphs()}};
+})();
+</script></body></html>
