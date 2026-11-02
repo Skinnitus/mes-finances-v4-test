@@ -321,6 +321,33 @@ renderBackup=function(){previousBackup();let days=state.backupLast?Math.floor((D
 const previousExport=exportData;
 exportData=function(){state.backupLast=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(state));previousExport();render()};
 function exportCSV(){let rows=[['Type','Date','Nom','Depuis','Vers','Montant EUR']];for(const e of state.expenses)rows.push(['Dépense',e.date,e.name,e.account||'Courant','',e.amount]);for(const t of allTransfers())rows.push(['Virement',t.date,t.label||'Virement',t.from,t.to,t.amount]);let content='\ufeff'+rows.map(r=>r.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');let a=document.createElement('a'),url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='mes-finances-operations-'+TODAY()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+/* Reconciliation of the user's pre-pay October 2026 reference. Only migrate the
+   known historical 327.03 EUR reference; never silently credit other baselines. */
+function finReconcileOctoberSalary(){
+ const a=state.accounts.find(x=>x.name==='Courant');
+ const amount=Number(state.salaries?.['2026-10']);
+ if(!a||Math.abs(Number(a.balance)-327.03)>0.001||!Number.isFinite(amount)||amount<=0)return;
+ if(state.salaryReceipts['2026-10']||state.octoberSalaryReconciled)return;
+ // The user confirmed that 327.03 EUR was BEFORE the October pay.
+ // Baseline date is used as an effective accounting date, not a claimed bank payment date.
+ const base=a.date||'2026-10-31';
+ state.salaryReceipts['2026-10']={id:'salary-2026-10',date:base,account:'Courant',amount,
+   createdAt:Math.max(Date.now(),Number(a.baselineUpdatedAt||0)+1),dateToVerify:true};
+ state.octoberSalaryReconciled=true;
+ save();
+}
+window.finUpdateOctoberSalaryDate=function(){
+ const r=state.salaryReceipts['2026-10'];if(!r)return;
+ const next=prompt('Date réelle de réception de la paie d’octobre (AAAA-MM-JJ)',r.date);
+ if(next===null)return;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(next)||Number.isNaN(Date.parse(next)))return alert('Date invalide');
+ r.date=next;r.dateToVerify=false;r.createdAt=Math.max(Date.now(),Number(state.accounts.find(a=>a.name===r.account)?.baselineUpdatedAt||0)+1);save();
+};
+const finAccountsBeforeReconcile=renderAccounts;
+renderAccounts=function(){finAccountsBeforeReconcile();const r=state.salaryReceipts['2026-10'];if(r&&r.dateToVerify){
+ $('accounts').insertAdjacentHTML('afterbegin','<div class="card"><h3>Paie d’octobre intégrée</h3><p>Les '+eur(r.amount)+' de salaire sont désormais inclus dans le solde calculé du Courant, à partir de la référence de 327,03 € avant paie.</p><p class="muted">Date comptable provisoire : '+esc(r.date)+'. Vérifie la date réelle de réception pour fiabiliser l’historique.</p><button onclick="finUpdateOctoberSalaryDate()">Corriger la date de réception</button></div>');
+ }};
+finReconcileOctoberSalary();
 const previousImport=importData;
 importData=async function(input){let f=input.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!Array.isArray(obj.charges)||!Array.isArray(obj.expenses)||!Array.isArray(obj.accounts)||!obj.salaries||!obj.carry||obj.accounts.length<1||obj.charges.some(c=>typeof c.name!=='string'||!Number.isFinite(Number(c.amount)))||obj.expenses.some(e=>!Number.isFinite(Number(e.amount))))throw Error('Structure incorrecte');if(!confirm('Remplacer toutes les données actuelles par cette sauvegarde ?'))return;state=normalizePrime(obj);state.transfers=Array.isArray(state.transfers)?state.transfers:[];state.closures=state.closures&&typeof state.closures==='object'?state.closures:{};save()}catch(e){alert('Sauvegarde invalide : '+e.message)}};
 // Navigation supplémentaire, sans modifier les onglets d'origine.
@@ -741,6 +768,33 @@ renderCharges=function(){prevCharges();const from=month+'-01',to=v4MonthEnd(mont
 };
 const prevCategories=v3RenderCategories;
 v3RenderCategories=function(){prevCategories();const sums={};for(const e of expenses(month)){const name=v3Category(e);sums[name]=(sums[name]||0)+Number(e.amount||0)}const parts=Object.entries(sums).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),total=parts.reduce((s,x)=>s+x[1],0);const colors=['#bf4977','#e4a66b','#8e87d4','#4db5a7','#d783ad','#7c9bbb','#e07a88','#a6a17d'];let cumulative=0;const stops=parts.map(([name,value],i)=>{const a=cumulative/total*100;cumulative+=value;return colors[i%colors.length]+' '+a+'% '+(cumulative/total*100)+'%'});$('categories').insertAdjacentHTML('afterbegin','<div class="card"><h2>Répartition des dépenses · '+esc(month)+'</h2><p class="fin-dynamic-help">Répartition réelle des dépenses par catégorie. Les virements internes et les charges réservées ne sont pas comptés comme dépenses variables.</p>'+(total?'<div class="fin-category-donut" role="img" aria-label="Diagramme circulaire des dépenses par catégorie" style="background:conic-gradient('+stops.join(',')+')"><div>'+eur(total)+'</div></div><div class="fin-cat-legend">'+parts.map(([name,value],i)=>'<div><span><i style="background:'+colors[i%colors.length]+'"></i>'+esc(name)+'</span><b>'+eur(value)+' <small>('+(value/total*100).toFixed(1)+' %)</small></b></div>').join('')+'</div>':'<p class="muted">Aucune dépense enregistrée pour ce mois.</p>')+'</div>')};
+/* Reconciliation of the user's pre-pay October 2026 reference. Only migrate the
+   known historical 327.03 EUR reference; never silently credit other baselines. */
+function finReconcileOctoberSalary(){
+ const a=state.accounts.find(x=>x.name==='Courant');
+ const amount=Number(state.salaries?.['2026-10']);
+ if(!a||Math.abs(Number(a.balance)-327.03)>0.001||!Number.isFinite(amount)||amount<=0)return;
+ if(state.salaryReceipts['2026-10']||state.octoberSalaryReconciled)return;
+ // The user confirmed that 327.03 EUR was BEFORE the October pay.
+ // Baseline date is used as an effective accounting date, not a claimed bank payment date.
+ const base=a.date||'2026-10-31';
+ state.salaryReceipts['2026-10']={id:'salary-2026-10',date:base,account:'Courant',amount,
+   createdAt:Math.max(Date.now(),Number(a.baselineUpdatedAt||0)+1),dateToVerify:true};
+ state.octoberSalaryReconciled=true;
+ save();
+}
+window.finUpdateOctoberSalaryDate=function(){
+ const r=state.salaryReceipts['2026-10'];if(!r)return;
+ const next=prompt('Date réelle de réception de la paie d’octobre (AAAA-MM-JJ)',r.date);
+ if(next===null)return;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(next)||Number.isNaN(Date.parse(next)))return alert('Date invalide');
+ r.date=next;r.dateToVerify=false;r.createdAt=Math.max(Date.now(),Number(state.accounts.find(a=>a.name===r.account)?.baselineUpdatedAt||0)+1);save();
+};
+const finAccountsBeforeReconcile=renderAccounts;
+renderAccounts=function(){finAccountsBeforeReconcile();const r=state.salaryReceipts['2026-10'];if(r&&r.dateToVerify){
+ $('accounts').insertAdjacentHTML('afterbegin','<div class="card"><h3>Paie d’octobre intégrée</h3><p>Les '+eur(r.amount)+' de salaire sont désormais inclus dans le solde calculé du Courant, à partir de la référence de 327,03 € avant paie.</p><p class="muted">Date comptable provisoire : '+esc(r.date)+'. Vérifie la date réelle de réception pour fiabiliser l’historique.</p><button onclick="finUpdateOctoberSalaryDate()">Corriger la date de réception</button></div>');
+ }};
+finReconcileOctoberSalary();
 const previousImport=importData;
 importData=async function(input){await previousImport(input);initialize()};
 })();
