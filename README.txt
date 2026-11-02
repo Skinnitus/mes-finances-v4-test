@@ -1,7 +1,10 @@
-MES FINANCES V4.0 — MIDNIGHT BORDEAUX ULTIMATE
+Mes Finances V4.0 — correctifs audit 02/11/2026
 
-Publication : déposer à la racine du projet les cinq fichiers index.html, manifest.webmanifest, sw.js, icon-192.png et icon-512.png.
+Récurrences mensuelles harmonisées (ancrage sur le jour initial, avec dernier jour du mois si nécessaire).
+Contrôles renforcés à la restauration JSON : comptes, échéances, dépenses et virements.
+Validation du compte débité et du montant à la saisie.
+Suppression de la simulation d’achat et des mentions de version bêta.
+Cache PWA actualisé. Les données locales ne sont pas volontairement effacées.
 
-ATTENTION : les données de test chargées dans un fichier local ne sont PAS transférées automatiquement vers la PWA publiée. Après publication, importer une sauvegarde JSON dans la PWA publiée. Conserver la V3.1 et sa sauvegarde jusqu’aux vérifications sur HTTPS et hors ligne.
-
-Ne pas publier avant confirmation des tests PWA sur le site cible.
+Avant mise en production : exporter une sauvegarde JSON depuis la version installée.
+Tester d’abord dans le dépôt de test. Ne pas vider le stockage du navigateur.
