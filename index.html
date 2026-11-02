@@ -184,7 +184,7 @@ render=function(){v3Theme();v3OldRender();for(const id of ['categories','goals',
 for(const [id,label,icon] of [['daily','Accueil','⌂'],['charges','Charges','▤'],['accounts','Comptes','◉'],['transfers','Virements','⇄'],['calendar','Calendrier','▦'],['categories','Catégories','◈'],['goals','Objectifs','◎'],['reports','Bilan','▥'],['backup','Réglages','⚙']]){let b=document.querySelector('nav button[data-tab="'+id+'"]');if(!b){b=document.createElement('button');b.dataset.tab=id;b.textContent=label;nav.appendChild(b);const section=document.createElement('section');section.id=id;section.className='hidden';document.querySelector('main').appendChild(section)}else b.textContent=label;b.dataset.icon=icon;}
 const fab=document.createElement('button');fab.id='v3Fab';fab.className='v3-fab';fab.textContent='+';fab.setAttribute('aria-label','Ajouter une dépense');fab.onclick=()=>{tab='daily';render();$('v3-expense-form')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('expenseAmount')?.focus(),300)};document.body.appendChild(fab);
 
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render()});render();
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render()});/* Initial rendering is performed after V4 functions are defined. */
 if ('serviceWorker' in navigator && location.protocol==='https:') {window.addEventListener('load',()=>Promise.resolve().catch(()=>{}));}
 
 function v32Cents(n){const v=Number(n);return Number.isFinite(v)?Math.round((v+Number.EPSILON)*100):0}
