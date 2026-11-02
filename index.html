@@ -253,7 +253,7 @@ state.v4.confirmed=state.v4.confirmed&&typeof state.v4.confirmed==='object'?stat
 state.v4.privateMode=Boolean(state.v4.privateMode);
 state.v4.reserveCents=Number.isSafeInteger(state.v4.reserveCents)?state.v4.reserveCents:0;
 const v4Date=(d)=>typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&!Number.isNaN(Date.parse(d+'T12:00:00Z'))&&new Date(d+'T12:00:00Z').toISOString().slice(0,10)===d;
-const v4MonthEnd=m=>new Date(Date.UTC(Number(m.slice(0,4)),Number(m.slice(5,7)),0)).toISOString().slice(0,10);
+function v4MonthEnd(m){return new Date(Date.UTC(Number(m.slice(0,4)),Number(m.slice(5,7)),0)).toISOString().slice(0,10)}
 const v4Money=x=>Math.round(Number(x)*100);
 const v4DateShift=(d,n)=>{const x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
 function v4Recurrences(start,end){
