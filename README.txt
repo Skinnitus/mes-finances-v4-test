@@ -1,10 +1,13 @@
-Mes Finances V4.0 — correctifs audit 02/11/2026
+Mes Finances V4.0 — Refonte graphique consolidée (TEST)
+02 novembre 2026
 
-Récurrences mensuelles harmonisées (ancrage sur le jour initial, avec dernier jour du mois si nécessaire).
-Contrôles renforcés à la restauration JSON : comptes, échéances, dépenses et virements.
-Validation du compte débité et du montant à la saisie.
-Suppression de la simulation d’achat et des mentions de version bêta.
-Cache PWA actualisé. Les données locales ne sont pas volontairement effacées.
+Base : correctif « opérations du même jour » validé par l'utilisateur.
+Refonte : thème Midnight Bordeaux / Bordeaux Minimal, cartes et formulaires modernisés, navigation mobile Accueil / Charges / Comptes / Plus, menu pour les rubriques secondaires, adaptation tablette et ordinateur.
+Aucune suppression intentionnelle des données locales. Clé localStorage inchangée.
+Cache PWA renouvelé : mes-finances-v40-refonte-20261102-a.
 
-Avant mise en production : exporter une sauvegarde JSON depuis la version installée.
-Tester d’abord dans le dépôt de test. Ne pas vider le stockage du navigateur.
+VALIDATION EFFECTUÉE : intégrité ZIP, syntaxe de tous les scripts JavaScript et du service worker.
+NON VALIDÉ : intégration Android réelle, migration sur le site de test, toutes les interactions, comportement hors ligne après ce changement.
+
+Publier UNIQUEMENT dans mes-finances-v4-test. Ne pas modifier mes-finances officiel.
+Sauvegarder les données JSON avant publication. Ne pas effacer le stockage du navigateur.

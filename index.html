@@ -16,7 +16,40 @@ nav button[data-tab="v4forecast"]{min-width:100px!important}
 nav button[data-tab="v4privacy"]{min-width:115px!important}
 nav button::before{line-height:1.1}
 @media(max-width:420px){header h1{font-size:clamp(21px,6vw,28px)}.card{padding:15px}main{padding-left:12px;padding-right:12px}}
-</style></head><body><header><h1>Mes Finances V4.0 — Midnight Bordeaux Ultimate</h1><div class="muted">ÉDITION ULTIMATE · V4.0</div><div class="muted" style="color:#c7e0ec">Votre quotidien, en toute clarté</div></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
+
+/* DESIGN SYSTEM — Midnight Bordeaux / Bordeaux Minimal · 2026-11-02 */
+:root{--radius:22px;--shadow:0 14px 42px rgba(0,0,0,.13);--focus:#d58caa}
+html{scroll-behavior:smooth}body{font-family:Inter,Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.48;-webkit-font-smoothing:antialiased}
+header{position:relative;overflow:hidden;padding:27px max(20px,calc((100vw - 1100px)/2)) 31px;background:radial-gradient(circle at 94% 5%,rgba(199,96,139,.24),transparent 39%),linear-gradient(118deg,#12182a 5%,#2b1a32 55%,#51223d);border-bottom:1px solid #74405a}
+header:after{content:"";position:absolute;right:-45px;bottom:-100px;width:240px;height:240px;border-radius:50%;border:1px solid #ffffff1a;pointer-events:none}
+header h1{font-family:Manrope,Inter,system-ui,sans-serif;font-size:clamp(22px,3.5vw,31px);font-weight:800;letter-spacing:-.95px;line-height:1.2;max-width:780px}
+header .muted{margin-top:5px;letter-spacing:.2px}main{max-width:1100px;padding:22px 20px calc(110px + env(safe-area-inset-bottom,0px))}
+.card{border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--line) 70%,transparent);margin-bottom:17px}
+.card h2{font-family:Manrope,Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-.4px;font-size:21px}
+.card h3{font-size:17px;letter-spacing:-.2px}.hero{padding:25px;background:radial-gradient(circle at 95% 15%,#b44b7777,transparent 46%),linear-gradient(125deg,#68263f,#352544 85%);box-shadow:0 16px 35px #2a0b2450}
+.hero strong{font-size:clamp(36px,6vw,52px);font-weight:850;letter-spacing:-1.7px}
+button{border-radius:13px;min-height:43px;font-size:14px;font-weight:700}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+input,select{min-height:48px;border-radius:13px;padding:12px 13px}label{margin-top:15px;font-size:13px}
+.row{padding:12px 0}.listItem{padding:16px 0}.notice{border-radius:15px;padding:15px}
+.v3-tile{border-radius:17px;padding:17px}.v3-tiles{gap:12px}.v3-metric{letter-spacing:-1.2px}
+nav{justify-content:center!important;overflow:visible!important;scrollbar-width:none;padding:8px 12px calc(10px + env(safe-area-inset-bottom,0px))!important;gap:6px!important;box-shadow:0 -12px 35px #0003;backdrop-filter:blur(18px);background:color-mix(in srgb,var(--panel) 95%,transparent)}
+nav button{min-width:0!important;max-width:155px!important;flex:1 1 0!important;min-height:62px!important;font-size:12px!important;padding:7px 5px!important;white-space:normal!important}
+nav button[data-tab]:not([data-tab="daily"]):not([data-tab="charges"]):not([data-tab="accounts"]){display:none!important}
+nav button[data-tab="daily"],nav button[data-tab="charges"],nav button[data-tab="accounts"]{display:block!important}
+nav button::before{font-size:23px;margin-bottom:4px}
+nav button#finMoreButton{display:block!important}nav button#finMoreButton::before{content:"☷";font-size:23px}
+nav button.active,nav button#finMoreButton.active{color:#e9a6c2;background:var(--panel2)}
+#finMorePanel{position:fixed;z-index:31;bottom:calc(88px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:min(95vw,520px);max-height:min(65vh,600px);overflow-y:auto;padding:17px;background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:0 15px 60px #0009}
+#finMorePanel[hidden]{display:none!important}#finMorePanel h2{margin:3px 5px 12px;font-size:18px}#finMorePanel .fin-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#finMorePanel button{min-height:54px;text-align:left;padding:10px 14px}
+#finMorePanel button.active{background:var(--accent);color:white}
+#finMoreBackdrop{position:fixed;inset:0;background:#0007;z-index:30}#finMoreBackdrop[hidden]{display:none!important}
+.v3-fab{bottom:calc(91px + env(safe-area-inset-bottom,0px));width:58px;height:58px}
+:root[data-theme="light"] .hero{color:#fff} :root[data-theme="light"] .positive{color:#fbe6ef}
+@media(min-width:850px){main{padding-left:30px;padding-right:30px}header{padding-top:38px;padding-bottom:38px}nav{position:sticky;top:0;bottom:auto;max-width:1100px;margin:0 auto 24px!important;border:1px solid var(--line);border-radius:19px;padding:7px!important;box-shadow:0 5px 20px #0002}nav button{min-height:56px!important}#finMorePanel{bottom:auto;top:115px}#finMoreBackdrop{background:#0004}.v3-fab{right:35px;bottom:35px}}
+@media(max-width:420px){main{padding:15px 12px calc(108px + env(safe-area-inset-bottom,0px))}.card{padding:17px;border-radius:19px}.grid{grid-template-columns:1fr 1fr;gap:10px}header{padding:23px 17px 25px}nav button{font-size:11px!important}.v3-tiles{grid-template-columns:1fr 1fr}}
+@media(max-width:350px){.grid{grid-template-columns:1fr}.v3-tiles{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+</style></head><body><header><h1>Mes Finances V4.0 — Midnight Bordeaux Ultimate</h1><div class="muted">MES FINANCES · ÉDITION V4.0</div><div class="muted" style="color:#c7e0ec">Votre quotidien, en toute clarté</div></header><main><nav><button data-tab="daily" class="active">Mon quotidien</button><button data-tab="charges">Charges</button><button data-tab="accounts">Comptes</button><button data-tab="backup">Sauvegarde</button><button data-tab="analysis">Analyse & prévisions</button></nav><section id="daily"></section><section id="charges" class="hidden"></section><section id="accounts" class="hidden"></section><section id="backup" class="hidden"></section><section id="analysis" class="hidden"></section></main><script>
 const SEED={"charges":[],"accounts":[{"name":"Courant","balance":0,"date":"2026-10-28"},{"name":"Épargne","balance":0,"date":"2026-10-28"},{"name":"FNZ Sparkonto","balance":0,"date":"2026-10-28"}],"salaries":{},"carry":{},"expenses":[],"octoberOpening":0,"octoberRemainingCharges":0};
 const KEY='mes-finances-v40-ultimate-local-v1';
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(SEED)}catch{state=structuredClone(SEED)}
@@ -62,7 +95,7 @@ function editExpense(id){let e=state.expenses.find(x=>x.id===id),name=prompt('No
 function renderCharges(){let c=editCharge===null?null:state.charges.find(x=>x.id===editCharge);$('charges').innerHTML=`<div class="card"><h2>${c?'Modifier':'Ajouter'} une charge régulière</h2><label>Nom</label><input id="chName" value="${esc(c?.name||'')}"><div class="grid"><div><label>Montant (€)</label><input id="chAmount" type="number" step="0.01" min="0" value="${c?.amount??''}"></div><div><label>Première échéance</label><input id="chStart" type="date" value="${c?.start||month+'-01'}"></div><div><label>Tous les…</label><input id="chInterval" type="number" min="1" step="1" value="${c?.interval||1}"></div><div><label>Unité</label><select id="chUnit">${['Jours','Semaines','Mois'].map(u=>`<option ${c?.unit===u?'selected':''}>${u}</option>`).join('')}</select></div><div><label>Compte débité</label><select id="chAccount">${state.accounts.map(a=>`<option ${c?.account===a.name?'selected':''}>${esc(a.name)}</option>`).join('')}</select></div><div><label>Date de fin (facultative)</label><input id="chEnd" type="date" value="${c?.end||''}"></div></div><div class="actions"><button class="primary" onclick="saveCharge()">Enregistrer</button>${c?'<button onclick="editCharge=null;render()">Annuler</button>':''}</div></div>${renderMonthlyDueDetails(month)}<div class="card"><h3>Charges régulières (${state.charges.length})</h3><p class="muted">Les charges actives sont réservées dès le début de chaque mois. Modifier une charge change les budgets recalculés.</p>${state.charges.map(ch=>`<div class="listItem"><div class="listTop"><div class="wrap"><b>${esc(ch.name)}</b><div class="muted">${esc(ch.interval)} ${esc(ch.unit.toLowerCase())} · ${esc(ch.account)} · ${ch.active?'Active':'Désactivée'}</div></div><b>${eur(ch.amount)}</b></div><div class="actions"><button onclick="editCharge=${ch.id};render();window.scrollTo(0,0)">Modifier</button><button onclick="toggleCharge(${ch.id})">${ch.active?'Désactiver':'Activer'}</button><button class="danger" onclick="deleteCharge(${ch.id})">Supprimer</button></div></div>`).join('')}</div>`}
 function saveCharge(){let name=$('chName').value.trim(),amount=Number($('chAmount').value),start=$('chStart').value,interval=Number($('chInterval').value),unit=$('chUnit').value,account=$('chAccount').value,end=$('chEnd').value;if(!name||!start||amount<0||!Number.isInteger(interval)||interval<1||end&&end<start)return alert('Vérifie les informations de la charge.');let obj={name,amount,start,interval,unit,account,end,budget:'Fixe',active:true};if(editCharge!==null){let c=state.charges.find(x=>x.id===editCharge);Object.assign(c,obj)}else state.charges.push({id:Date.now(),...obj});editCharge=null;save()}
 function toggleCharge(id){let c=state.charges.find(x=>x.id===id);c.active=!c.active;save()}function deleteCharge(id){if(confirm('Supprimer cette charge ?')){state.charges=state.charges.filter(x=>x.id!==id);save()}}
-function renderAccounts(){$('accounts').innerHTML=`<div class="card"><h2>Mes trois comptes</h2><p class="muted">Soldes de référence importés de ton Excel. Les budgets ne sont pas des soldes bancaires en temps réel.</p>${state.accounts.map((a,i)=>`<div class="listItem"><b>${esc(a.name)}</b><div class="muted">Au ${esc(a.date)}</div><label>Solde de référence (€)</label><input type="number" step="0.01" value="${a.balance}" onchange="state.accounts[${i}].balance=Number(this.value);save()"><label>Date du solde</label><input type="date" value="${a.date}" onchange="state.accounts[${i}].date=this.value;save()"></div>`).join('')}</div>`}
+function renderAccounts(){$('accounts').innerHTML=`<div class="card"><h2>Mes trois comptes</h2><p class="muted">Soldes de référence importés de ton Excel. Les budgets ne sont pas des soldes bancaires en temps réel.</p>${state.accounts.map((a,i)=>`<div class="listItem"><b>${esc(a.name)}</b><div class="muted">Au ${esc(a.date)}</div><label>Solde de référence (€)</label><input type="number" step="0.01" value="${a.balance}" onchange="state.accounts[${i}].balance=Number(this.value);state.accounts[${i}].baselineUpdatedAt=Date.now();save()"><label>Date du solde</label><input type="date" value="${a.date}" onchange="state.accounts[${i}].date=this.value;state.accounts[${i}].baselineUpdatedAt=Date.now();save()"></div>`).join('')}</div>`}
 function renderBackup(){$('backup').innerHTML=`<div class="card"><h2>Sauvegarder mes données</h2><p>Les données sont enregistrées sur cet appareil dans le navigateur. Effacer les données du navigateur peut les supprimer. Fais des sauvegardes régulières.</p><div class="actions"><button class="primary" onclick="exportData()">Exporter une sauvegarde JSON</button></div><label>Restaurer une sauvegarde JSON</label><input type="file" accept=".json,application/json" onchange="importData(this)"></div><div class="card"><h3>Informations</h3><p class="muted">Application hors ligne, sans connexion bancaire. La paie reçue un mois finance le mois suivant. Les charges FNZ restent réservées dans les charges fixes.</p></div>`}
 function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mes-finances-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
 async function importData(input){let f=input.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(!Array.isArray(obj.charges)||!Array.isArray(obj.expenses)||!Array.isArray(obj.accounts))throw Error();if(!confirm('Remplacer les données actuelles par cette sauvegarde ?'))return;state=normalizePrime(obj);save()}catch{alert('Sauvegarde invalide')}}
@@ -82,18 +115,23 @@ const automaticTransfers=(until=TODAY())=>{
 };
 const allTransfers=(until=TODAY())=>[...automaticTransfers(until),...state.transfers.filter(t=>t.date<=until)].sort((a,b)=>a.date.localeCompare(b.date));
 const accountProjected=(a,until=TODAY())=>(v4AccountBalances(until)[a.name]??cents(a.balance))/100;
-// Soldes calculés à partir des références datées : opérations postérieures uniquement.
-// Les soldes de référence peuvent déjà inclure les opérations antérieures ou du même jour.
+// La date seule ne suffit pas : une nouvelle opération du même jour doit compter.
+function v4AfterBaseline(op,a){
+ const base=a.date||'9999-12-31';
+ if(op.date>base)return true;
+ if(op.date<base)return false;
+ return Number.isFinite(Number(op.createdAt)) && Number(op.createdAt)>Number(a.baselineUpdatedAt||0);
+}
 function v4AccountBalances(until=TODAY()){
  const balances={};
  for(const a of state.accounts){
   if(!a||!a.name||!Number.isFinite(Number(a.balance)))continue;
   let value=cents(a.balance),base=a.date||'9999-12-31';
   for(const e of state.expenses){
-   if(e.date>base&&e.date<=until&&(e.account||'Courant')===a.name)value-=cents(e.amount);
+   if(v4AfterBaseline(e,a)&&e.date<=until&&(e.account||'Courant')===a.name)value-=cents(e.amount);
   }
   for(const t of state.transfers){
-   if(t.date<=base||t.date>until)continue;
+   if(!v4AfterBaseline(t,a)||t.date>until)continue;
    if(t.from===a.name)value-=cents(t.amount);
    if(t.to===a.name)value+=cents(t.amount);
   }
@@ -101,7 +139,7 @@ function v4AccountBalances(until=TODAY()){
  }
  return balances;
 }
-function saveTransfer(){let date=$('trDate').value,from=$('trFrom').value,to=$('trTo').value,amount=Number($('trAmount').value),label=$('trLabel').value.trim();if(!date||!from||!to||from===to||!(amount>0)||!Number.isFinite(amount)){alert('Vérifie la date, les comptes et le montant.');return}state.transfers.push({id:'manual-'+Date.now(),date,from,to,amount:Math.round(amount*100)/100,kind:'manual',label:label||'Virement manuel'});save()}
+function saveTransfer(){let date=$('trDate').value,from=$('trFrom').value,to=$('trTo').value,amount=Number($('trAmount').value),label=$('trLabel').value.trim();if(!date||!from||!to||from===to||!(amount>0)||!Number.isFinite(amount)){alert('Vérifie la date, les comptes et le montant.');return}state.transfers.push({id:'manual-'+Date.now(),date,from,to,amount:Math.round(amount*100)/100,kind:'manual',label:label||'Virement manuel',createdAt:Date.now()});save()}
 function removeTransfer(id){if(!confirm('Supprimer ce virement manuel ?'))return;state.transfers=state.transfers.filter(t=>t.id!==id);save()}
 function renderTransfers(){let names=state.accounts.map(a=>a.name),opt=selected=>names.map(n=>`<option ${n===selected?'selected':''}>${esc(n)}</option>`).join(''),list=allTransfers();$('transfers').innerHTML=`<div class="card"><h2>Virements entre comptes</h2><div class="notice">Les virements FNZ planifiés sont des échéances prévisionnelles, pas des opérations bancaires confirmées. Ils ne sont jamais déduits une deuxième fois de ton reste pour vivre. Si un virement réel est retardé, corrige la charge régulière ou le solde de référence.</div><h3 style="margin-top:16px">Ajouter un virement manuel</h3><div class="grid"><div><label>Date</label><input id="trDate" type="date" value="${TODAY()}"></div><div><label>Montant (€)</label><input id="trAmount" type="number" step="0.01" min="0.01"></div><div><label>Depuis</label><select id="trFrom">${opt('Courant')}</select></div><div><label>Vers</label><select id="trTo">${opt('Épargne')}</select></div></div><label>Motif (facultatif)</label><input id="trLabel" placeholder="Épargne, remboursement…"><div class="actions"><button class="primary" onclick="saveTransfer()">Enregistrer le virement</button></div></div><div class="card"><h3>Historique des virements (${list.length})</h3>${list.length?list.slice().reverse().map(t=>`<div class="listItem"><div class="listTop"><div><b>${esc(t.label||'Virement')}</b><div class="muted">${esc(t.date)} · ${esc(t.from)} → ${esc(t.to)}</div><div class="muted">${t.kind==='auto'?'Prévu (non confirmé par la banque)':'Saisi manuellement'}</div></div><b>${eur(t.amount)}</b></div>${t.kind==='manual'?`<div class="actions"><button class="danger" onclick="removeTransfer('${esc(t.id)}')">Supprimer</button></div>`:''}</div>`).join(''):'<p class="muted">Aucun virement enregistré.</p>'}</div>`}
 function renderCalendar(){let days=Number($('calDays')?.value||30),start=TODAY(),end=new Date(start+'T12:00:00Z');end.setUTCDate(end.getUTCDate()+days);let items=allScheduled(start,end.toISOString().slice(0,10));$('calendarList').innerHTML=`<p class="muted">Échéances à venir, déjà réservées dans le budget du mois correspondant. Aucune deuxième déduction.</p>${items.length?items.map(e=>`<div class="row"><div><b>${esc(e.name)}</b><div class="muted">${esc(e.date)} · ${esc(e.account)}${e.isFNZ?' · virement FNZ':''}</div></div><b>${eur(e.amount)}</b></div>`).join(''):'<p>Aucune échéance dans cette période.</p>'}`}
@@ -149,7 +187,7 @@ const add=d.querySelector('#expenseName');if(add){const form=add.closest('.card'
 for(const e of p.list){const items=[...d.querySelectorAll('.listItem')];const node=items.find(n=>n.querySelector(`button[onclick="editExpense(${e.id})"]`));if(node){const title=node.querySelector('.muted');if(title)title.insertAdjacentHTML('beforeend',` · ${esc(v3Category(e))}`)}}
 }
 const v3OriginalAddExpense=addExpense;
-addExpense=function(){const date=$('expenseDate')?.value,name=$('expenseName')?.value.trim(),amount=Number($('expenseAmount')?.value),category=$('v3ExpenseCategory')?.value||'Autres',account=$('expenseAccount')?.value||'Courant';if(!v32ValidDate(date)||!name||!Number.isFinite(amount)||!(amount>0)||!state.accounts.some(a=>a.name===account))return alert('Vérifie la date, le montant et le compte débité.');state.expenses.push({id:Date.now(),month:date.slice(0,7),date,name,amount,category,account});month=date.slice(0,7);save()};
+addExpense=function(){const date=$('expenseDate')?.value,name=$('expenseName')?.value.trim(),amount=Number($('expenseAmount')?.value),category=$('v3ExpenseCategory')?.value||'Autres',account=$('expenseAccount')?.value||'Courant';if(!v32ValidDate(date)||!name||!Number.isFinite(amount)||!(amount>0)||!state.accounts.some(a=>a.name===account))return alert('Vérifie la date, le montant et le compte débité.');state.expenses.push({id:Date.now(),month:date.slice(0,7),date,name,amount,category,account,createdAt:Date.now()});month=date.slice(0,7);save()};
 const v3OriginalEditExpense=editExpense;
 editExpense=function(id){const e=state.expenses.find(x=>String(x.id)===String(id));if(!e)return;
  const name=prompt('Nom de la dépense',e.name);if(name===null)return;
@@ -407,10 +445,10 @@ renderAccounts=function(){
  const box=document.getElementById('accounts');
  if(!box)return;
  const card=document.createElement('div');card.className='card';
- card.innerHTML='<h2>Soldes calculés au '+esc(TODAY())+'</h2><p class="muted">Soldes de référence + virements manuels − dépenses enregistrées après la date de chaque solde de référence. Les opérations du jour même que la référence ne sont pas redéduites. Les virements FNZ seulement programmés ne sont pas comptabilisés.</p>'+
+ card.innerHTML='<h2>Soldes calculés au '+esc(TODAY())+'</h2><p class="muted">Soldes de référence + virements manuels − dépenses enregistrées après la date de chaque solde de référence. Les nouvelles opérations du jour sont prises en compte ; les opérations déjà incluses dans la référence ne sont pas redéduites. Les virements FNZ seulement programmés ne sont pas comptabilisés.</p>'+
  state.accounts.map(a=>'<div class="row"><span>'+esc(a.name)+'</span><b>'+eur((balances[a.name]??cents(a.balance))/100)+'</b></div>').join('')+
  '<div class="row"><b>Patrimoine calculé</b><b>'+eur(total/100)+'</b></div>'+
- '<p class="muted">Lorsque tu actualises manuellement un solde de référence, indique aussi sa date. Les dépenses et virements antérieurs ou à cette date sont alors considérés comme déjà inclus.</p>';
+ '<p class="muted">Lorsque tu actualises manuellement un solde de référence, indique aussi sa date. Les opérations antérieures sont déjà incluses ; les nouvelles opérations enregistrées le même jour sont comptées après la mise à jour de la référence.</p>';
  box.insertBefore(card,box.firstChild);
 };
 // Les projections démarrent des soldes calculés aujourd'hui et non des références anciennes.
@@ -422,11 +460,35 @@ v4Forecast=function(days){
   // Le moteur existant intègre déjà les virements manuels depuis la référence.
   // Ajouter uniquement les dépenses réelles postérieures à cette référence.
   let spent=0;
-  for(const e of state.expenses)if(e.date>(a.date||'9999-12-31')&&e.date<=TODAY()&&(e.account||'Courant')===a.name)spent+=cents(e.amount);
+  for(const e of state.expenses)if(v4AfterBaseline(e,a)&&e.date<=TODAY()&&(e.account||'Courant')===a.name)spent+=cents(e.amount);
   result.balances[a.name]-=spent;
  }
  result.total=Object.values(result.balances).reduce((a,b)=>a+b,0);
  return result;
 };
+</script>
+
+<script>
+/* Navigation 4 onglets + Plus. Ne modifie aucune donnée financière. */
+(function(){
+ const nav=document.querySelector('nav');if(!nav||document.getElementById('finMoreButton'))return;
+ const more=document.createElement('button');more.id='finMoreButton';more.type='button';more.textContent='Plus';more.setAttribute('aria-label','Ouvrir les autres rubriques');more.setAttribute('aria-expanded','false');
+ const backdrop=document.createElement('div');backdrop.id='finMoreBackdrop';backdrop.hidden=true;
+ const panel=document.createElement('div');panel.id='finMorePanel';panel.hidden=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Autres rubriques');
+ panel.innerHTML='<h2>Autres rubriques</h2><div class="fin-menu-grid"></div>';
+ const grid=panel.querySelector('.fin-menu-grid');
+ const core=new Set(['daily','charges','accounts']);
+ function close(){panel.hidden=true;backdrop.hidden=true;more.setAttribute('aria-expanded','false')}
+ function sync(){more.classList.toggle('active',!core.has(tab));for(const b of grid.querySelectorAll('button'))b.classList.toggle('active',b.dataset.target===tab)}
+ for(const b of nav.querySelectorAll('button[data-tab]')){
+  if(core.has(b.dataset.tab))continue;
+  const item=document.createElement('button');item.type='button';item.dataset.target=b.dataset.tab;item.textContent=b.textContent;
+  item.onclick=()=>{tab=b.dataset.tab;close();render();window.scrollTo(0,0)};grid.appendChild(item)
+ }
+ more.onclick=()=>{const open=panel.hidden;panel.hidden=!open;backdrop.hidden=!open;more.setAttribute('aria-expanded',String(open));sync()};
+ backdrop.onclick=close;document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+ nav.appendChild(more);document.body.append(backdrop,panel);
+ const prior=render;render=function(){prior();sync()};sync();
+})();
 </script>
 </body></html>
